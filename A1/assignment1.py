@@ -6,7 +6,6 @@ Created on Thu Feb  8 11:15:15 2018
 @author: Domo
 """
 
-
 from math import sqrt
 
 column1 = []
@@ -14,7 +13,6 @@ column2 = []
 column3 = []
 column4 = []
 column5 = []
-
 
 
 with open("data.txt", "r") as dataIn:
@@ -32,20 +30,12 @@ with open("data.txt", "r") as dataIn:
   
 
 
-     
-
-
-
-
 #initialize every number as a float
 float_column1 = [float(i) for i in column1]
 float_column2 = [float(i) for i in column2]
 float_column3 = [float(i) for i in column3]
 float_column4 = [float(i) for i in column4]
 float_column5 = [float(i) for i in column5]
-
-
-
 
 
 
@@ -94,8 +84,6 @@ sum_value5 = sum(float_column5)
 average_value5 = sum(float_column5) / len(float_column5)
 sddev_value5 = sqrt(sum((x - average_value5)**2 for x in float_column5) / len(float_column5))
 variance_value5 = sum([(i - average_value5) ** 2 for i in float_column5]) / (len(float_column5) - 1)
-
-
 
 
 
