@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>CSCI 5015 Assignment</title>
+   <style>
+      h1 {
+         text-align: center;
+      }
+      p, li, figcaption {
+         font-size: 12pt;
+      }
+      li {
+         margin-bottom: .5em;
+      }
+      pre {
+         margin: 0;
+      }
+      code {
+         font-weight: bold;
+      }
+   </style>
+   
+</head>
+
+<body>
+   <h1>
+   CSCI 5015 Assignment 2
+   <span style="color: red;">Updated</span>
+   <br>
+   Due Feb 16, 11:59 PM.
+   <br>
+   50 points
+   </h1>
+    
+   <h2>Objective</h2>
+   <p>
+      Work with dictionaries and learn about Python's <code>csv</code> library.
+   </p>
+   
+   <h2>Background</h2>
+   <p>
+      You've been given a data file named <strong>Clarksville_weather_history.csv</strong>.
+      This file contains daily information gathered at 
+      Clarksville's main weather station from April 1, 2001 to December 13, 2017.
+      The data was downloaded from NOAA's
+      <a href="https://www.ncdc.noaa.gov/" target="_blank">National Centers for Environmental Information</a>,
+      which
+      "is responsible for preserving, monitoring, assessing,
+      and providing public access to the Nation's treasure of
+      climate and historical weather data and information."
+   </p>
+   <p>
+      The file has 10 columns
+   </p>
+   <ul>
+      <li>STATION - weather station id</li>
+      <li>NAME - weather station name</li>
+      <li>DATE - date of the reading in the format YYYY-MM-DD (e.g. 2017-03-02 is March 2, 2017)</li>
+      <li>PRCP - precipitation</li>
+      <li>SNOW - snowfall</li>
+      <li>SNWD - snow depth</li>
+      <li>TAVG - average temperature</li>
+      <li>TMAX - maximum daily temperature</li>
+      <li>TMIN - minimum daily temperature</li>
+   </ul>
+   
+   <h3>Reading the file</h3>
+   <p>
+      The data file is a Comma Separated Value (CSV) file, but notice it has some extra
+      double quotes around all the values.  We haven't seen that before.
+      For example,
+   </p>
+   <pre><code>
+      "USW00003894","CLARKSVILLE OUTLAW AIRPORT, TN US","2001-04-01",,,,"46","56","35"
+   </code></pre>
+   <p>
+      The reason for this is that the NAME has a comma as part of the name.  The quotes
+      are telling the people and programs that use the file that commas inside
+      the quotes are not field separators, but are actually part of the data.  This means,
+      if we read the data as I demonstrated in class and used <code>split()</code>
+      on each line like this
+   </p>
+   <pre><code>
+      for line in dataIn:
+         line = line.strip()
+         line = line.replace('"', '') # get rid of the pesky double quotes
+         fields = line.split(',')
+   </code></pre>
+   <p>
+      and then printed the line we just read, we would see this:
+   </p>
+   <pre><code>
+      ['USW00003894', 'CLARKSVILLE OUTLAW AIRPORT', ' TN US', '2001-04-01', '', '', '', '46', '56', '35']
+   </code></pre>
+   <p>
+      Notice the NAME got split into two values,
+      <code>'CLARKSVILLE OUTLAW AIRPORT'</code> and
+      <code>' TN US'</code>.  That is incorrect.  The name should be
+      one long value 
+      <code>CLARKSVILLE OUTLAW AIRPORT, TN US</code>.  Using <code>split()</code>
+      and removing the double quotes is exactly the wrong thing to do.  So,
+      how do we read this data?
+   </p>
+   <p>
+      I'm glad you asked.  We <em>could</em>  change the code we did in class
+      to handle the quotes and split the line correctly.  But, honestly, that's a pain.
+      So, instead, we are going to use a module that comes with Python.  The
+      module is named <code>csv</code> and it contains a tool called <code>DictReader</code>.
+   </p>
+   <p>
+      <code>DictReader</code> does the same thing we did in class, that is, read a CSV file which
+      has labels on the first row.  After reading the first row, it turns each row
+      into a <code>dict</code> value (actually, the value is a <code>OrderedDict</code>, which is
+      the same a <code>dict</code>, at least for our purposes).  The nice part is that
+      <code>DictReader</code> handles splitting the fields correctly and
+      handling CSV values with commas inside the double quotes.
+   </p>
+   <p>
+      When <code>DictReader</code> reads the file, it make all the values strings.
+      That is fine for the NAME column, but not for columns like TAVG, which is a number.
+      Another issue with the file is that many rows have fields that are missing values.
+      When <code>DictReader</code> reads a row and finds a field with an empty value,
+      it will add an an empty string to the <code>dict</code> for that field.
+      To deal with both these issues, you can modify
+      the data returned from reading a line with <code>DictReader</code>
+      using an if-statement similar to the one below.
+      You can do this for any field you need to work with.  You can ignore values of
+      fields you don't actually use.
+   </p>
+   <pre><code>
+        if len(row['TAVG']) > 0:
+            # convert string to float number
+            row['TAVG'] = float(row['TAVG'])
+        else:
+            # no value 
+            row['TAVG'] = None
+   </code></pre>
+   <p>
+      In Python, <code>None</code> means "no value."  It is similar to
+      <code>null</code> in other languages.  In later parts of the code, you will
+      need to process the numbers, but you will also need to
+      avoid the <code>None</code> value.  If you
+      don't skip the <code>None</code> value, it is very likely your code will crash.  A simple if-statement
+      will let you ignore them.  For example, if we were looping through all the data,
+      and we only wanted to print TAVG values that had a number, we could put this
+      if-statement inside the loop:
+   </p>
+   <pre><code>
+      # only print the row if it has a value in it.
+      if row['TAVG'] is not None:
+         print(row['TAVG'])
+   </code></pre>
+   
+   <h2>Coding instructions</h2>
+   <p>
+      Create a Python file named <b>assignment2.py</b> and place the data file
+      <strong>Clarksville_weather_history.csv</strong>
+      in the same folder.  Add a comment at the top of your
+      file with your name, for example,
+   </p>
+   <pre><code>    # Written by John Nicholson </code></pre>
+   <p>
+      Your program should read the data file using <code>DictReader</code> and clean
+      up the numbers as described above.  You will need to research how to use
+      <code>DictReader</code> through Google searches.  Make sure you are looking for
+      <strong>Python 3</strong> examples so that you see sample
+      code written in the same version
+      of Python as we are using.
+      Once you know you have read the file correctly,
+      compute the following values:
+   </p>
+   <ul>
+      <li>The highest average temperature (TAVG) and the day it occurred (DATE)</li>
+      <li>The lowest average temperature (TAVG) and the day it occurred (DATE)</li>
+      <li>The highest maximum temperature (TMAX) and the day it occurred (DATE)</li>
+      <li>The lowest maximum temperature (TMAX) and the day it occurred (DATE)</li>
+      <li>The highest minimum temperature (TMIN) and the day it occurred (DATE)</li>
+      <li>The lowest minimum temperature (TMIN) and the day it occurred (DATE)</li>
+      <li>The highest precipitation (PRCP) and the day it occurred (DATE)</li>
+      <li>The highest snow fall (SNOW) and the day it occurred (DATE)</li>
+   </ul>
+   <p>
+      <span style="color: red; font-weight: bold;">UPDATE:</span>
+      If more than one day has the highest value, then pick the first or last one
+      to print. If more than one day has the lowest value, then pick the first or last one
+      to print.
+   </p>
+   <p>
+      <span style="color: red; font-weight: bold;">UPDATE:</span>
+      As mentioned in the D2L News section, the data is noiser than expected.
+      Do not include 0 or empty values in your calculations for the highest and
+      lowest.  Instead, for each value above, you should also output
+   </p>
+   <ul>
+      <li>The number of values in the column (TMAX, TMIN, TAVG, PRCP, SNOW) that are empty</li>
+      <li>The number of values in the column (TMAX, TMIN, TAVG, PRCP, SNOW) that are 0</li>
+   </ul>
+   <p>
+      Output your results to the file <strong>results.txt</strong>.
+      The first line of the output should be a statement with your name, for example,
+   </p>
+   <code><pre>
+      Prepared by John Nicholson
+   </pre></code>
+   <p>
+      Ensure that all data is labeled descriptively.  It should be obvious
+      what each item means.
+   </p>
+   
+   <h2>Tips and help</h2>
+   <p>
+      The data file is big.  You might want to create a similar, yet smaller, file
+      to test you program on.  This way you can place values in the small file
+      that you know the answers for.  Write your program and test it on that file.
+      Once you are sure your program works on the small file, change it to work on the
+      big file.
+   </p>
+   <p>
+      You can always come see me in my office or send me email.  If you send me email,
+      you should send your code as an attachment.  Don't copy/paste your code into
+      the message because that will make it harder for me to debug your code.  Send your file
+      as a <code>.py</code> file
+   </p>
+   
+   <h2>Submission</h2>
+   <p>
+      When your program is correct, log into D2L and locate the Dropbox for assignment 1.
+      Upload the two files
+   </p>
+   <ul>
+      <li>assignment2.py</li>
+      <li>results.txt</li>
+   </ul>
+   <p>
+      into the D2L dropbox.  
+   </p>
+   <p>
+      Contact me if you have any problems.
+   </p>
+</body>
+</html>

@@ -1,0 +1,39 @@
+Prepared by: Domas Budrys
+
+The highest average temperature:  90.0  and the day it occurred:  2011-06-09
+
+The lowest average temperature:  6.0  and the day it occurred:  2015-02-19
+
+The number of values in the column (TAVG) that are empty : 2622
+The number of values in the column (TAVG) that are zero(0) : 7
+-------------------------------------------------------------
+
+The highest maximum temperature:  109.0  and the day it occurred:  2012-06-29
+
+The lowest maximum temperature:  13.0  and the day it occurred:  2003-01-23
+
+The number of values in the column (TMAX) that are empty : 24
+The number of values in the column (TMAX) that are zero(0) : 0
+-------------------------------------------------------------
+
+The highest minimum temperature:  77.0  and the day it occurred:  2001-07-08
+
+The lowest minimum temperature:  1.0  and the day it occurred:  2014-01-07
+
+The number of values in the column (TMIN) that are empty : 26
+The number of values in the column (TMIN) that are zero(0) : 2
+-------------------------------------------------------------
+
+The highest precipitation:  6.66  and the day it occurred:  2002-09-26
+
+
+The number of values in the column (PRCP) that are empty : 25
+The number of values in the column (PRCP) that are zero(0) : 3856
+-------------------------------------------------------------
+
+Highest value of SNOW cannot be calculated because none of the
+ values are higher than (0) or something else than 'None' 
+
+The number of values in the column (SNOW) that are empty : 5249
+The number of values in the column (SNOW) that are zero(0) : 678
+Proof:  5249 + 678  = (Number of Rows) 5927
