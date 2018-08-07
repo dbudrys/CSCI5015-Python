@@ -1,0 +1,48 @@
+Experiment 1 :
+min:  25.81013
+max:  1.86289
+range:    23.94724
+sum:  6,501,594.31151
+average:    13.00319
+sddev:     2.50294
+variance:     6.26474
+
+
+Experiment 2 :
+max:  24.31955
+min:  0.81648
+range:    23.50307
+sum:  5,998,513.57679
+average:    11.99703
+sddev:     2.50070
+variance:     6.25351
+
+
+Experiment 3 :
+max:  22.22741
+min:  2.62214
+range:    19.60527
+sum:  5,998,056.53427
+average:    11.99611
+sddev:     1.99636
+variance:     3.98547
+
+
+Experiment 4 :
+max:  17.85879
+min:  8.49995
+range:     9.35884
+sum:  6,501,018.58900
+average:    13.00204
+sddev:     1.00039
+variance:     1.00078
+
+
+Experiment 5 :
+max:  19.64722
+min:  6.23286
+range:    13.41436
+sum:  6,500,757.77525
+average:    13.00152
+sddev:     1.50250
+variance:     2.25751

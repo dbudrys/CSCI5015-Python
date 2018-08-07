@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>CSCI 5015 Assignment</title>
+   <style>
+      h1 {
+         text-align: center;
+      }
+      p, li, figcaption {
+         font-size: 12pt;
+      }
+      li {
+         margin-bottom: .5em;
+      }
+      pre {
+         margin: 0;
+      }
+   </style>
+   
+   <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+      });
+   </script>
+   <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+   </script>
+   
+</head>
+
+<body>
+   <h1>
+   CSCI 5015 Assignment 1
+   <br>
+   Due Feb 8, 11:59 PM.
+   <br>
+   50 points
+   </h1>
+    
+   <h2>Objective</h2>
+   <p>
+      Use Python to compute basic statistics for data in a file.
+   </p>
+   
+   <h2>Background</h2>
+   <p>
+      You've been given a data file, data.txt, which contains
+      data from experiments for a new environmental sensor.
+      The sensor is still being developed
+      and is being tweaked to find the settings for
+      optimal performance.  The project's
+      engineers are running experiments to find settings
+      that allow the sensor to work reliably and are recording their
+      data in the file you've been given.
+   </p>
+   <p>
+      The data file has five columns of data.  Each column represents
+      the data collected during an experiment with the sensor. Column 1
+      represents experiment 1, column 2 represents experiment 2,
+      and so on.  All the values in the file are positive numbers greater
+      than or equal to 0.  Each number is a float and all values
+      have 5 digits of precision after the decimal point.
+   </p>
+   <p>
+      The 
+      engineers want you to calculate the following statistics
+      for each column / experiment:
+   </p>
+   <ul>
+      <li>The maximum value, $max$, found in each column</li>
+      <li>The minimum value, $min$, found in each column</li>
+      <li>
+         The range of values, $range$, found in each column, where<br>
+         <span style="margin-left:3em;">
+            $range = max - min$
+         </span>
+      </li>
+      <li>
+         The sum, $sum$, of all the values in each column,
+         where<br>
+         <span style="margin-left:3em;">
+            $sum = \sum_{i=1}^{N}x_i$
+         </span>
+      </li>
+      <li>
+         The average value, $\bar{x}$, of each column,   
+         where<br>
+         <span style="margin-left:3em;">
+            $\bar{x} = \frac{\sum_{i=1}^{N}x_i}{N}$
+         </span>
+      </li>
+      <li>
+         The standard deviation, $s$, of each column, where<br>
+         <span style="margin-left:3em;">
+            $s = \sqrt{\frac{\sum_{i=1}^{N}(x_i - \bar{x})^2}{N-1}}$
+         </span>
+      </li>
+      <li>
+         The variance, $s^2$, of each column, where the variance is square
+         of the
+         standard deviation, $s$.
+      </li>
+   </ul>
+   
+   <h2>Coding instructions</h2>
+   <p>
+      Create a Python file named <b>assignment1.py</b> and place the data file
+      <b>data.txt</b> in the same folder.  Add a comment at the top of your
+      file with your name, for example
+   </p>
+   <pre><code>    # Written by John Nicholson </code></pre>
+   <p>
+      Your program should open the data file
+      for reading and compute the seven required values for
+      each column/experiment.  Since there are 5 columns,
+      you will be computing 35 values in total.
+   </p>
+   <p>
+      Output the results to a second file named <b>results.txt</b>.
+      Ensure that each value is labeled so that the person reading the file
+      knows which statistic - $max$, $min$, $range$, $sum$, $\bar{x}$ (average),
+      $s$ (standard deviation), and $s^2$ (variance) - and which experiment -
+      1, 2, 3, 4, and 5 -
+      is associated with each value.  Add a statement at the top of the file
+      with your name.
+      Output the data in a
+      format similar to the following (obviously replacing XXXX for real numbers):
+   </p>
+   <code><pre>
+      Prepared by John Nicholson
+      
+      Experiment 1
+         max:      XXXX
+         min:      XXXX
+         range:    XXXX
+         sum:      XXXX
+         average:  XXXX
+         stddev:   XXXX
+         variance: XXXX
+         
+      Experiment 2
+         max:      XXXX
+         min:      XXXX
+         range:    XXXX
+         ...
+   </pre></code>
+   
+   <p>
+      The purpose of this assignment is to ensure you can code basic Python, so you
+      should not
+      not use any external library.  Therefore, there is
+      one restriction on your program: you may not have any <code>import</code>
+      statements in your code,
+      except
+      for the one required to use <code>sqrt()</code>, the square root function.  Here is some sample code demonstrating
+      the function:
+   </p>
+   <pre><code>
+      <b>from math import sqrt</b>
+
+      x = 4
+      y = <b>sqrt(x)</b>
+
+      print("The square root of {} is {}".format(x, y))
+   </code></pre>
+   <p>
+      Otherwise, you can complete this assignment using the topics we discussed
+      in the first two lectures.  You can use other features of Python
+      if you wish, as long as they don't require an import statement.
+   </p>
+   
+   <h2>Tips and help</h2>
+   <p>
+      The data file is big.  You might want to create a similar, yet smaller file,
+      to test you program on.  This way you can place values in the small file
+      that you know the answers for.  Write your program and test it on that file.
+      Once you are sure your program works on the small file, change it to work on the
+      big file.
+   </p>
+   <p>
+      You can always come see me in my office or send me email.  If you send me email,
+      you should send your code as an attachment.  Don't copy/paste your code into
+      the message because that will make it harder for me to debug your code.  
+   </p>
+   
+   <h2>Submission</h2>
+   <p>
+      When your program is correct, log into D2L and locate the Dropbox for assignment 1.
+      Upload the two files
+   </p>
+   <ul>
+      <li>assignment1.py</li>
+      <li>results.txt</li>
+   </ul>
+   <p>
+      into the D2L dropbox.  
+   </p>
+   <p>
+      Contact me if you have any problems.
+   </p>
+</body>
+</html>
