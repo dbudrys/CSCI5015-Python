@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>CSCI 5015 Assignment</title>
+   <style>
+      h1 {
+         text-align: center;
+      }
+      p, li, figcaption {
+         font-size: 12pt;
+      }
+      li {
+         margin-bottom: .5em;
+      }
+      pre {
+         margin: 0;
+      }
+      code {
+         font-weight: bold;
+      }
+      .markdown_example {
+         margin-left: 5em;
+         font-family: sans-serif;
+      }
+      .markdown_example h1 {
+         text-align: left;
+      }
+      
+      table {
+         margin-left: 2em;
+      }
+      
+      table#state_data  td:nth-child(2) {
+         padding-right: 5em;
+      }
+      table  td:nth-child(even) {
+         padding-left: 1em;
+      }
+      table  td:nth-child(odd) {
+         text-align: right;
+      }
+   </style>
+   
+</head>
+
+<body>
+   <h1>
+   CSCI 5015 Assignment 4
+   <br>
+   Due March 16, 11:59 PM.
+   <br>
+   50 points
+   </h1>
+    
+   <h2>Objective</h2>
+   <p>
+      Use pandas and work with multiple files
+   </p>
+   
+   <h2>Data set</h2>
+   <p>
+      You've been given a data set from the National Highway Traffic
+      Safety Administration (NHTSA).
+      The data comes from their
+      <a href="https://www.nhtsa.gov/research-data/fatality-analysis-reporting-system-fars" target="_blank">
+          Fatality Analysis Reporting System (FARS)</a>.
+      This particular data set represents the traffic fatalities in the
+      United States during 2016.  In each file, one line or record represents
+      data for one accident.
+   </p>
+   <p>
+      For this assignment, the data is contained in a
+      folder named <code>FARS</code>.  Each state's
+      data is contained in a data
+      file named <code>accident_XX.csv</code>, where <code>XX</code> is a two-digit
+      code for a state.  The first column in the data files have
+      the same state code/number.
+      Use this table to match states to their code:
+   </p>
+   <table id="state_data">
+      <tr><td>1</td><td>Alabama</td><td>31</td><td>Nebraska</td></tr>
+      <tr><td>2</td><td>Alaska</td><td>32</td><td>Nevada</td></tr>
+      <tr><td>4</td><td>Arizona</td><td>33</td><td>New Hampshire</td></tr>
+      <tr><td>5</td><td>Arkansas</td><td>34</td><td>New Jersey</td></tr>
+      <tr><td>6</td><td>California</td><td>35</td><td>New Mexico</td></tr>
+      <tr><td>8</td><td>Colorado</td><td>36</td><td>New York</td></tr>
+      <tr><td>9</td><td>Connecticut</td><td>37</td><td>North Carolina</td></tr>
+      <tr><td>10</td><td>Delaware</td><td>38</td><td>North Dakota</td></tr>
+      <tr><td>11</td><td>District of Columbia</td><td>39</td><td>Ohio</td></tr>
+      <tr><td>12</td><td>Florida</td><td>40</td><td>Oklahoma</td></tr>
+      <tr><td>13</td><td>Georgia</td><td>41</td><td>Oregon</td></tr>
+      <tr><td>15</td><td>Hawaii</td><td>42</td><td>Pennsylvania</td></tr>
+      <tr><td>16</td><td>Idaho</td><td>43</td><td>Puerto Rico</td></tr>
+      <tr><td>17</td><td>Illinois</td><td>44</td><td>Rhode Island</td></tr>
+      <tr><td>18</td><td>Indiana</td><td>45</td><td>South Carolina</td></tr>
+      <tr><td>19</td><td>Iowa</td><td>46</td><td>South Dakota</td></tr>
+      <tr><td>20</td><td>Kansas</td><td>47</td><td>Tennessee</td></tr>
+      <tr><td>21</td><td>Kentucky</td><td>48</td><td>Texas</td></tr>
+      <tr><td>22</td><td>Louisiana</td><td>49</td><td>Utah</td></tr>
+      <tr><td>23</td><td>Maine</td><td>50</td><td>Vermont</td></tr>
+      <tr><td>24</td><td>Maryland</td><td>52</td><td>Virgin Islands (since 2004)</td></tr>
+      <tr><td>25</td><td>Massachusetts</td><td>51</td><td>Virginia</td></tr>
+      <tr><td>26</td><td>Michigan</td><td>53</td><td>Washington</td></tr>
+      <tr><td>27</td><td>Minnesota</td><td>54</td><td>West Virginia</td></tr>
+      <tr><td>28</td><td>Mississippi</td><td>55</td><td>Wisconsin</td></tr>
+      <tr><td>29</td><td>Missouri</td><td>56</td><td>Wyoming</td></tr>
+      <tr><td>30</td><td>Montana</td></tr>
+   </table>
+   <p>
+      The FARS folder also contains the file <code>nst-est2017-alldata.csv</code>,
+      which has population estimates of the United States.  This data comes
+      from the <a href="https://www.census.gov/data/datasets/2017/demo/popest/state-total.html" target="_blank">
+         U.S. Census Bureau</a>.  The column, <code>POPESTIMATE2016</code>,
+         contains the population esitmate for each state in 2016, which is the
+         same year as the crash data.
+   </p>
+   
+   <h2>Coding instructions</h2>
+   <p>
+      Create a Jupyter notebook file named <b>assignment4.ipynb</b>.  Unzip the file,
+      <strong>FARS.zip</strong> and place the folder
+      <strong>FARS</strong>
+      in the same folder as your notebook.  
+   </p>
+   <p>
+      Make the first cell in your notebook a Markdown cell and create
+      a header that says "FARS Analysis" and then on the next line,
+      have a plain paragraph that says "Written by John Nicholson" 
+      (hopefully, it is obvious that
+      you should replace my name with your name).  It should look roughly like this
+      after you render the Markdown:
+   </p>
+   <div class="markdown_example">
+      <h1>FARS Analysis</h1>
+      <p>Written by John Nicholson</p>
+   </div>
+   <p>
+      Use your notebook to answer the questions below.
+      Your notebook should have both code cells and Markdown cells.
+      The code cells should read and process the data,
+      and the Markdown cell should explain what the associated code cell does
+      and why you wrote the code
+      the way you did.  If you wish, add extra cells to
+      make your main code easier to read and use.
+   </p>
+   <h3>Requirements</h3>
+   <ul>
+      <li>
+         No single code cell should produce all the output for more than
+         one question.
+         At a minimum, you will need 9 code cells, one for each question.
+      </li>
+      <li>
+         If you make additional code cells, they do not have to display data.
+         For example, you may want to write a helper
+         function in a code cell.  You
+         still need a Markdown cell describing the function and why you wrote the
+         function in the first place.
+      </li>
+      <li>
+         All code cells need a Markdown cell explaining what the code does
+         and why you wrote it the way you did.  Explanations should be
+         complete sentences and paragraphs,
+         use good grammar, and be spell-checked.
+      </li>
+      <li>
+         Before turning in your notebook, ensure that all code cells
+         that produce output have their output displayed.  I should not
+         have to run your notebook in order to see the output.  You should
+         all render all Markdown cells.  That is, I should
+         not see the special
+         Markdown characters like the <code>#</code>.  I should see nicely rendered text.
+      </li>
+   </ul>
+   <h3>Questions</h3>
+   <p>
+      For all questions, don't output codes.  Output the state names, day names, etc.
+   </p>
+   <ol>
+      <li>
+         For each state, what day of the week has the most accidents?
+         Use the <code>DAY_WEEK</code> column.  Output the day and the count. For the values
+         output the day name, where 1 is Sunday, 2 is Monday, ... and 7 is Saturday.
+      </li>
+      <li>
+         For whole United States, i.e., all the data,
+         what day of the week has the most accidents?
+         Output the day and the count.
+      </li>
+      <li>
+         <p>
+            For each state, what hour of the day has the most accidents?
+            Output the hour and the count.
+         </p>
+         <ul>
+            <li>A value of 99 in the HOUR means unknown.</li>
+         </ul>
+      </li>
+      <li>
+         For whole United States, what hour of the day has the most accidents?
+         Output the hour and the count.
+      </li>
+      <li>
+         For each state, what is the percentage of fatal
+         accidents involved at least one drunk driver?
+         If the column, <code>DRUNK_DR</code>, has a 0, then no drunk drivers
+         were involved.  Any number larger than 0 indicates the number of
+         drunk drivers involved in the accident.
+      </li>
+      <li>
+         For whole United States, what is the percentage of fatal
+         accidents involved at least one drunk driver?
+      </li>
+      <li>
+         <p>
+            For whole United States, how many fatalities were caused by
+            each type of collision?  Use the <code>MAN_COLL</code> column.  The values in the
+            column are below.
+         </p>
+         <table>
+            <tr><td>0</td><td>Not Collision with Motor Vehicle in Transport</td></tr>
+            <tr><td>1</td><td>Front-to-Rear</td></tr>
+            <tr><td>2</td><td>Front-to-Front</td></tr>
+            <tr><td>6</td><td>Angle</td></tr>
+            <tr><td>7</td><td>Sideswipe – Same Direction</td></tr>
+            <tr><td>8</td><td>Sideswipe – Opposite Direction</td></tr>
+            <tr><td>9</td><td>Rear-to-Side</td></tr>
+            <tr><td>10</td><td>Rear-to-Rear</td></tr>
+            <tr><td>11</td><td>Other (End-Swipes and Others)</td></tr>
+            <tr><td>98</td><td>Not Reported</td></tr>
+            <tr><td>99</td><td>Unknown</td></tr>
+         </table>
+      </li>
+      
+      <li>
+         For each state, what is its fatal accident rate per 10,000 people?
+         To calculate this, count the number of accidents in a state,
+         divide by the state's 2016 population estimate from the
+         <code>nst-est2017-alldata.csv</code> Census data file,
+         and then multiply by 10000.
+         Output the states' rates in order from highest to lowest.
+      </li>
+      
+      <li>
+         For each state, what is the rate of fatal accidents caused by drunk driving
+         per 10,000 people?
+         To calculate this, count the number of accidents in which a drunk
+         driver was involved,
+         divide by the state's 2016 population estimate from the
+         <code>nst-est2017-alldata.csv</code> Census data file,
+         and then multiply by 10000.
+         Output the states' rates in order from highest to lowest.
+      </li>
+   </ol>
+   <h2>Tips and help</h2>
+   <p>
+      Remember, we talked about files and listing directories in the previous lecture.
+   </p>
+   <p>
+      When you are running code, you may not
+      see results right away.  You should look to the left of the code cell for the
+      <code>In [ ]:</code> marker.  If you see a number, for example, <code>In [8]:</code>,
+      the code in the cell is not currently
+      running.  But if you see an asterisk, for example, <code>In [*]:</code>,
+      the code in the cell is running on the kernel,
+      and results may not be available yet.  The asterisk should change
+      to a number when the code is done.
+   </p>
+   <p>
+      Remember, you can stop a running cell by choosing the "stop" button in the menu.
+      It is the one that looks like a black square.
+   </p>
+   <p>
+      You can always come see me in my office or send me email.  If you send me email,
+      you should send your code as an attachment.  Don't copy/paste your code into
+      the message because that will make it harder for me to debug your code.  Send your file
+      as a <code>.ipynb</code> file
+   </p>
+   
+   <h2>Submission</h2>
+   <p>
+      When your program is correct, log into D2L and locate the Dropbox for assignment 4.
+      Upload the file
+   </p>
+   <ul>
+      <li>assignment4.ipynb</li>
+   </ul>
+   <p>
+      into the D2L dropbox.  
+   </p>
+   <p>
+      Contact me if you have any problems.
+   </p>
+</body>
+</html>
