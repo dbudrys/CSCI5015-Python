@@ -3,4 +3,4 @@
 
 &nbsp; &nbsp; &nbsp; &nbsp; Above provided examples are free to us
 
-* #### Assignment 3 -#### Missing data set. Access to data set can be provided upon request
+* **Assignment 3-** Missing data set. Access to data set can be provided upon request
