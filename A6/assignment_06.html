@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>CSCI 5015 Assignment</title>
+   <style>
+      h1 {
+         text-align: center;
+      }
+      p, li, figcaption {
+         font-size: 12pt;
+      }
+      li {
+         margin-bottom: .5em;
+      }
+      pre {
+         margin: 0;
+      }
+      code {
+         font-weight: bold;
+      }
+      .markdown_example {
+         margin-left: 5em;
+         font-family: sans-serif;
+      }
+      .markdown_example h1 {
+         text-align: left;
+      }
+      
+      table {
+         margin-left: 2em;
+      }
+      
+      table#state_data  td:nth-child(2) {
+         padding-right: 5em;
+      }
+      table  td:nth-child(even) {
+         padding-left: 1em;
+      }
+      table  td:nth-child(odd) {
+         text-align: right;
+      }
+      aside {
+         float: right;
+         width: 20%;
+         border: 1px solid black;
+         margin: 5px;
+         padding: 5px;
+         background: #faf0ff;
+      }
+   </style>
+   
+</head>
+
+<body>
+   <h1>
+   CSCI 5015 Assignment 6
+   <br>
+   Due April 3, 11:59 PM.
+   <br>
+   50 points
+   </h1>
+    
+   <h2>Objective</h2>
+   <p>
+      Working with messy data.
+      Create more graphs, including Word Clouds, with matplotlib and seaborn.
+   </p>
+   
+   <h2>Data set</h2>
+   <aside>
+      Once you get your homework done, you may want to check out the Archive's
+      Internet Arcade collection,
+      <a href="https://archive.org/details/internetarcade" target="_blank">
+         https://archive.org/details/internetarcade</a>,
+      which is a
+      library of arcade (coin-operated) video games from the 1970s
+      through to the 1990s, and playable in your browser.  Remember,
+      <strong>after</strong> you complete your homework. &#x1F600;
+   </aside>
+   
+   <p>
+      You've given been a ZIP file, <strong>data.zip</strong> that contains
+      archives of five Usenet groups.
+      These files come from the Internet Archive,
+      <a href="https://archive.org" target="_blank">
+         https://archive.org</a>.
+      The Internet Archive makes many data collections available for download
+      and often preserves historical data that is often lost when a
+      website disappears.
+      Our data comes from the Usenet Historical Collection,
+      <a href="https://archive.org/details/usenethistorical" target="_blank">
+         https://archive.org/details/usenethistorical</a>,
+      which contains Gigabytes worth of Usenet data from the 80's, 90's and early
+      2000's.
+   </p>
+   
+   <p>  
+      If you haven't heard of Usenet before, it was a large discussion board
+      that allowed people to gather online and discuss topics of interest,
+      for example, Linux, movies, cooking, whatever your interest was.  Think
+      of it as a completely text-based Reddit.  For more information, read
+      about its history at the usual place, Wikipedia,
+      <a href="https://en.wikipedia.org/wiki/Usenet" target="_blank">
+         https://en.wikipedia.org/wiki/Usenet</a>.
+   </p>
+   <p>
+      The archives you been given come from the following groups
+   </p>
+   <ul>
+      <li>
+         comp.org.acm - announcements from the Association for Computing Machinery,
+         the world's largest scientific and educational computing society
+      </li>
+      <li>
+         rec.arts.origami - discussions about folding paper
+      </li>
+      <li>sci.fractals - discussions about fractals, the king of mathematical eye candy</li>
+      <li>linux.dev.kernel - discussions between the developers who created Linux</li>
+      <li>rec.food.chocolate - mmmmmmm, chocolate</li>
+   </ul>
+   <p>
+      The data is in the MBOX format (MBOX stands for MailBOX).
+      MBOX is a text-based format that contains a set of messages.
+      Messages are divided into headers and the content of the message.
+      Headers for a message come first and have an identifier, a colon, and then
+      some data after it.
+      For example,
+   </p>
+   <code><pre>
+      From 3072346469177122312
+      X-Google-Thread: 1160c2,91073f25a01ab25d
+      Path: g2news2.google.com!news1.google.com!news3.google.com!newshub.sdsu.edu!tethys.csu.net!okeanos.csu.net!53ab2750!not-for-mail
+      From: Tyler Spaeth <cadix@mac.com>
+      Newsgroups: alt.arts.origami,rec.arts.origami,
+      Message-ID: <2007011412111116807-cadix@maccom>
+      References: <Xns98AE99025C82FWilliamyourclothes@207.115.17.102>
+      MIME-Version: 1.0
+      Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+      Content-Transfer-Encoding: 8bit
+      Subject: Re: trying to locate stores
+      User-Agent: Unison/1.7.7
+      Lines: 25
+   </pre></code>
+   <p>
+      The one exception, <em>I think</em>, is the first header item, the first <strong>From</strong>,
+      which does not have a colon and is followed by a large positive or negative integer.
+      I think that line starts each message, but don't count on it.
+      Also don't rely on every message having all the same headers. Depending
+      on when the message was sent and where it was sent from, a message
+      may get a different set of headers than other messages in the same archive.
+   </p>
+   <p>
+      Even the values for headers are inconsistent.  For example, here are several
+      examples of the various
+      date-time formats that can be found in the files for the <strong>Date:</strong>
+      header.
+   </p>
+   <ul>
+      <li>Date: 1996/06/21</li>
+      <li>Date: 21 Jun 1996 11:49:45 +0200</li>
+      <li>Date: Mon, 5 Oct 1992 22:26:07 GMT</li>
+      <li>Date: 23 Sep 92 17:05:49 GMT</li>
+   </ul>
+   <p>
+      After the headers, is the message body.  Any text there is pretty much valid
+      since a person can type whatever they want.
+   </p>
+   <p>
+      <strong>Warning:</strong> Usenet could be used by anyone, much like Reddit.
+      People talked about their opinions and could often get fired up,
+      using not-so-polite language.  I have tried to pick archives of groups
+      that would normally avoid over-the-top conversations and comments,
+      but given the amount of the data here, you may see some inappropriate language.
+      Such is the nature of data.
+   </p>
+   
+   <h2>Coding instructions</h2>
+   <p>
+      Create a Jupyter notebook file named <b>assignment6.ipynb</b>.  Unzip the file,
+      <strong>data.zip</strong> and place the five TXT files in the same
+      folder as your notebook.  
+   </p>
+   <p>
+      Make the first cell in your notebook a Markdown cell and create
+      a header that says "Usenet Analysis" and then on the next line,
+      have a plain paragraph that says "Written by John Nicholson" 
+      (hopefully, it is obvious that
+      you should replace my name with your name).  It should look roughly like this
+      after you render the Markdown:
+   </p>
+   <div class="markdown_example">
+      <h1>Usenet Analysis</h1>
+      <p>Written by John Nicholson</p>
+   </div>
+   <p>
+      Use your notebook to answer the questions below.
+      Your notebook should have both code cells and Markdown cells.
+      The code cells should read and process the data,
+      and the Markdown cell should explain what the associated code cell does
+      and why you wrote the code
+      the way you did.  If you wish, add extra cells to
+      make your main code easier to read and use.
+   </p>
+   <h3>Hints</h3>
+   <p>
+      Before jumping into making a graph, print the data to make sure you
+      are capturing the right thing and to help you understand what you are working with.
+      This is especially important when you need to do some data clean-up.
+   </p>
+   <p>
+      Using regular expressions may or may not help on some questions.
+      Sometimes, it is easier to make more than one regular expression rather
+      one giant regular expression that tries to do everything.
+   </p>
+   <h3>Requirements</h3>
+   <ul>
+      <li>
+         No single code cell should produce all the output for more than
+         one question.
+         At a minimum, you will need 6 code cells, one for each question.
+      </li>
+      <li>
+         If you make additional code cells, they do not have to display data.
+         For example, you may want to write a helper
+         function in a code cell.  You
+         still need a Markdown cell describing the function and why you wrote the
+         function in the first place.
+      </li>
+      <li>
+         All code cells need a Markdown cell explaining what the code does
+         and why you wrote it the way you did.  Explanations should be
+         complete sentences and paragraphs,
+         use good grammar, and be spell-checked.
+      </li>
+      <li>
+         Before turning in your notebook, ensure that all code cells
+         that produce output have their output displayed.  I should not
+         have to run your notebook in order to see the output.  You should
+         all render all Markdown cells.  That is, I should
+         not see the special
+         Markdown characters like the <code>#</code>.  I should see nicely rendered text.
+      </li>
+      <li>
+         <p>
+            For all questions with a plot or graph, you must
+         </p>
+         <ul>
+            <li>
+               plot a graph in addition to the required Markdown cell that
+               explains why you wrote the code the way you did
+            </li>
+            <li>
+               Use a different set of colors for each graph
+            </li>
+            <li>
+               Give each graph an appropriate title.  For seaborn assign
+               the plot to a variable and then use that variable to call
+               <code>set_title</code>
+               <pre><code>
+                  ax = sns.countplot(...
+                  ax.set_title('My awesome title')
+               </code></pre>
+               For matplotlib, give the plot function a title argument, e.g.
+               <code>title='My awesome title'</code>
+            </li>
+         </ul>
+      </li>
+   
+   </ul>
+   <h3>Questions</h3>
+   <ol>
+      <li>
+         <p>
+            How many messages are in each archive?
+         </p>
+         <p>         
+            Make a countplot that shows how many messages are in each archive.
+            We will assume the <strong>From</strong> with no colon followed by
+            a large positive or negative integer can be used to identify the
+            start of a message, so count those lines.
+         </p>
+         <p>
+            In addition to making the countplot, print the message counts for
+            each archive below the graph.
+         </p>
+      </li>
+      <li>
+         <p>
+            For each archive, what is the average number of lines per message?
+         </p>
+         <p>
+            Make a countplot that shows the average number of lines per message
+            in each archive.
+            Use the header <strong>Line:</strong> to find the number of lines.
+            When computing the average, divide by the number of <strong>Line:</strong>
+            headers you found, not the <strong>From </strong> header we used above.
+         </p>
+      </li>
+      <li>
+         <p>
+            Who were the top 5 posters in each group?
+         </p>
+         <p>
+            You do not need to plot this.  Create a nice, printed report
+            for each archive listing the user, and the number of postings
+            they made.
+         </p>
+         <p>
+            Use the <strong>From:</strong> header to identify message posters.
+            Some people changed email addresses over time or changed
+            their email software so that their <strong>From:</strong>
+            value changed.  That means you may see the same person
+            listed more than once in your top 5.  For example,
+         </p>
+         <ul>
+            <li>From: "David C. Ullrich" &lt;ullrich@math.okstate.edu&gt;</li>
+            <li>From: David Ullrich &lt;ullrich@math.okstate.edu&gt;</li>
+            <li>From: David C. Ullrich &lt;david_ullrich@my-deja.com&gt;</li>
+         </ul>
+         <p>
+            These are probably the same person.  The first two definitely are,
+            but one has quotes and one doesn't.  You do not have to fix this.
+            Just count each unique value after <strong>From:</strong> header label.
+            If
+            your top 5 for an archive lists what is probably the
+            same person more than once, as long as the name  difference similar to
+            what you see above, we will count them as unique people.
+         </p>
+      </li>
+      <li>
+         <p>
+            For all messages, which mail programs (or user agents)
+            were the most popular
+            for sending messages to Usenet?
+         </p>
+         <p>
+            Make a countplot of the top 15 user agents.  Sort the counts
+            so that they appear from the highest count to the lowest.
+         </p>
+         <p>
+            There are two headers <strong>User-Agent:</strong>
+            and <strong>X-Http-User-Agent</strong> that can be used
+            to identify what mail program was used to send a message.
+            The values for these are all over the place, but there is some
+            consistency.  You get two basic formats
+         </p>
+         <ul>
+            <li>User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.9) Gecko/20020513</li>
+            <li>User-Agent: Mailgate Web Server</li>
+         </ul>
+         <p>
+            In the first case there is a basic identifier followed by a slash with
+            lots of specifics about the user agent.  In those cases, just extract
+            the user agent between the colon and the first forward slash, which
+            would be <strong>Mozilla</strong> above.  In the second case,
+            there is no slash, so just extract everything after the colon,
+            which would be <strong>Mailgate Web Server</strong> above.
+         </p>
+      </li>
+      <li>
+         <p>
+            As the World Wide Web grew, use of Usenet fell.  Does our data
+            support this statement?
+         </p>
+         <p>
+            Extract the year from each <strong>Date:</strong> header.  Remember,
+            there are many formats in the fields you you will need to clean
+            up the values and make them consistent.  Count how many times
+            the year appears for each archive.
+         </p>
+         <p>
+            When you plot, create one graph that has years in the x-axis and
+            counts in the y-axis.  Draw five lines one for each archive's count.
+            Make sure to have a legend on the graph so that you know
+            which line represents which archive.  You can start with
+            the single basic plot from matplotlib documentation as a starting
+            point,
+            <a href="https://matplotlib.org/gallery/lines_bars_and_markers/simple_plot.html"
+               target="_blank">
+               https://matplotlib.org/gallery/lines_bars_and_markers/simple_plot.html</a>. 
+         </p>
+         <p>
+            Be aware that you are being asked to graph something and then use that
+            graph to answer the question.  Make sure to add a write-up below the
+            graph explaining your interpretation of the graph.
+         </p>
+      </li>
+      <li>
+         <p>
+            Word clouds can act as a type of "fingerprint" for a set of data.
+            Does our data support that statement?
+         </p>
+         <p>
+            Create a word cloud for each archive.  You should not pass the header
+            lines to the word cloud library, make sure to only pass message data.
+            Create five word clouds, one for each archive.
+         </p>
+         <p>
+            Be aware, you need to discuss your interpretation of the word clouds
+            in relationship to the statement above.
+         </p>
+      </li>
+      
+   </ol>
+   <h2>Tips and help</h2>
+   <p>
+      Remember, we talked about files and listing directories in a previous lecture.
+   </p>
+   <p>
+      When you are running code, you may not
+      see results right away.  You should look to the left of the code cell for the
+      <code>In [ ]:</code> marker.  If you see a number, for example, <code>In [8]:</code>,
+      the code in the cell is not currently
+      running.  But if you see an asterisk, for example, <code>In [*]:</code>,
+      the code in the cell is running on the kernel,
+      and results may not be available yet.  The asterisk should change
+      to a number when the code is done.
+   </p>
+   <p>
+      Remember, you can stop a running cell by choosing the "stop" button in the menu.
+      It is the one that looks like a black square.
+   </p>
+   <p>
+      You can always come see me in my office or send me email.  If you send me email,
+      you should send your code as an attachment.  Don't copy/paste your code into
+      the message because that will make it harder for me to debug your code.  Send your file
+      as a <code>.ipynb</code> file
+   </p>
+   
+   <h2>Submission</h2>
+   <p>
+      When your program is correct, log into D2L and locate the Dropbox for assignment 6.
+      Upload the file
+   </p>
+   <ul>
+      <li>assignment6.ipynb</li>
+   </ul>
+   <p>
+      into the D2L dropbox.  
+   </p>
+   <p>
+      Contact me if you have any problems.
+   </p>
+</body>
+</html>
