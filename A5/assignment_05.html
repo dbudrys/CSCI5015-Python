@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>CSCI 5015 Assignment</title>
+   <style>
+      h1 {
+         text-align: center;
+      }
+      p, li, figcaption {
+         font-size: 12pt;
+      }
+      li {
+         margin-bottom: .5em;
+      }
+      pre {
+         margin: 0;
+      }
+      code {
+         font-weight: bold;
+      }
+      .markdown_example {
+         margin-left: 5em;
+         font-family: sans-serif;
+      }
+      .markdown_example h1 {
+         text-align: left;
+      }
+      
+      table {
+         margin-left: 2em;
+      }
+      
+      table#state_data  td:nth-child(2) {
+         padding-right: 5em;
+      }
+      table  td:nth-child(even) {
+         padding-left: 1em;
+      }
+      table  td:nth-child(odd) {
+         text-align: right;
+      }
+   </style>
+   
+</head>
+
+<body>
+   <h1>
+   CSCI 5015 Assignment 5
+   <br>
+   Due March 23, 11:59 PM.
+   <br>
+   50 points
+   </h1>
+    
+   <h2>Objective</h2>
+   <p>
+      Create graphs with matplotlib and seaborn.
+   </p>
+   
+   <h2>Data set</h2>
+   <p>
+      You've been given a ZIP file named
+      <strong>ml-20m.zip</strong>.
+      This file contains the MovieLens 20M Dataset, which comes from
+      <a href="https://grouplens.org/datasets/movielens/" target="_blank">
+         https://grouplens.org/datasets/movielens/</a>.
+      It contains "20 million ratings and
+      465,000 tag applications applied to 27,000 movies by 138,000 users."
+      Although there are a lot of records, the file formats are simple
+      and easily understood.
+   </p>
+   <p>
+      The ZIP contains a <strong>README.txt</strong> and several CSV files
+   </p>
+   <ul>
+      <li>genome-scores.csv</li>
+      <li>genome-tags.csv</li>
+      <li>links.csv</li>
+      <li>movies.csv</li>
+      <li>ratings.csv</li>
+      <li>tags.csv</li>
+   </ul>
+   <p>
+      We will primarily be using the movies.csv, ratings.csv, and tags.csv files.
+   </p>
+   
+   <h2>Coding instructions</h2>
+   <p>
+      Create a Jupyter notebook file named <b>assignment5.ipynb</b>.  Unzip the file,
+      <strong>ml-20m.zip</strong> and place the three files
+      <strong>movies.csv</strong>,
+      <strong>ratings.csv</strong>, and
+      <strong>tags.csv</strong>
+      in the same folder as your notebook.  
+   </p>
+   <p>
+      Make the first cell in your notebook a Markdown cell and create
+      a header that says "Movie Analysis" and then on the next line,
+      have a plain paragraph that says "Written by John Nicholson" 
+      (hopefully, it is obvious that
+      you should replace my name with your name).  It should look roughly like this
+      after you render the Markdown:
+   </p>
+   <div class="markdown_example">
+      <h1>Movie Analysis</h1>
+      <p>Written by John Nicholson</p>
+   </div>
+   <p>
+      Use your notebook to answer the questions below.
+      Your notebook should have both code cells and Markdown cells.
+      The code cells should read and process the data,
+      and the Markdown cell should explain what the associated code cell does
+      and why you wrote the code
+      the way you did.  If you wish, add extra cells to
+      make your main code easier to read and use.
+   </p>
+   <h3>Requirements</h3>
+   <ul>
+      <li>
+         No single code cell should produce all the output for more than
+         one question.
+         At a minimum, you will need 9 code cells, one for each question.
+      </li>
+      <li>
+         If you make additional code cells, they do not have to display data.
+         For example, you may want to write a helper
+         function in a code cell.  You
+         still need a Markdown cell describing the function and why you wrote the
+         function in the first place.
+      </li>
+      <li>
+         All code cells need a Markdown cell explaining what the code does
+         and why you wrote it the way you did.  Explanations should be
+         complete sentences and paragraphs,
+         use good grammar, and be spell-checked.
+      </li>
+      <li>
+         Before turning in your notebook, ensure that all code cells
+         that produce output have their output displayed.  I should not
+         have to run your notebook in order to see the output.  You should
+         all render all Markdown cells.  That is, I should
+         not see the special
+         Markdown characters like the <code>#</code>.  I should see nicely rendered text.
+      </li>
+   </ul>
+   <h3>Questions</h3>
+   <p>
+      For all questions, you must
+   </p>
+   <ul>
+      <li>
+         plot a graph in addition to the required Markdown cell that
+         explains why you wrote the code the way you did
+      </li>
+      <li>
+         Use a different set of colors for each graph
+      </li>
+      <li>
+         Give each graph an appropriate title.  For seaborn assign
+         the plot to a variable and then use that variable to call
+         <code>set_title</code>
+         <pre><code>
+            ax = sns.countplot(...
+            ax.set_title('My awesome title')
+         </code></pre>
+         For matplotlib, give the plot function a title argument, e.g.
+         <code>title='My awesome title'</code>
+      </li>
+   </ul>
+   <ol>
+      <li>
+         <p>
+            How often are movies classified by more than one genre?
+         </p>
+         <p>
+            In <strong>movies.csv</strong>, the third column contains the genres of each movie.
+            Movies may have more than one genre.  In that case each genre is separated by a pipe
+            symbol ( | ).
+            Create a
+            <a href="https://seaborn.pydata.org/generated/seaborn.countplot.html" target="_blank">
+               countplot
+            </a>
+            that shows how many movies have 0 genres in the data, 1 genre, 2 genres,
+            3 genres, up to the highest number of genres (whatever that is).
+            Movies with no genres can be identified with <strong>(no genres listed)</strong>.
+         </p>
+      </li>
+      <li>
+         <p>
+            Which genres are the most popular?
+         </p>
+         <p>
+            Graph the count of each individual genre with a countplot.
+            Do not graph the count for movies with no genre, which
+            can be identified with <strong>(no genres listed)</strong>.
+            Sort the counts from the genre with the lowest count to the highest
+            count.
+         </p>
+      </li>
+      <li>
+         <p>
+            Which tags are the most popular?
+         </p>
+         <p>
+            In <strong>tags.csv</strong>, the third column contains tags for movies.  A tag
+            may consist of more than one word.  Each row represents a tag an individual
+            gave to a movie. 
+            Create a graph that shows the count of the top 10 most used tags
+            sorted from lowest count to highest count.  Make the tags lowercase
+            for constancy .
+         </p>
+      </li>
+      <li>
+         <p>
+            How many ratings where given each year?
+         </p>
+         <p>
+            In <strong>ratings.csv</strong>, the last column contains timestamp.  The
+            timestamp is a Unix timestamp that represents seconds from the Unix epoch.
+            To convert this to a datetime object, you use <code>datetime.fromtimestamp</code>.
+            Note that it needs an int, not a string.  Then to get the year, you
+            call the datetime's <code>strftime()</code>
+         </p>
+         <pre><code>
+            from datetime import datetime
+            
+            timestamp = '1112486027'
+            dt = datetime.fromtimestamp(int(timestamp))
+            year = dt.strftime('%Y')
+         </code></pre>
+         <p>
+            Using matplotlib, plot the number of ratings made each year. Rather than
+            a countplot, use matplotlib directly.  Plot each count for a year
+            as a dot and connect all the dots as a line.  Basically,
+            combine the techniques in
+            <a href="https://matplotlib.org/gallery/lines_bars_and_markers/simple_plot.html"
+               target="_blank">
+               https://matplotlib.org/gallery/lines_bars_and_markers/simple_plot.html
+            </a>
+            and
+            <a href="https://matplotlib.org/gallery/subplots_axes_and_figures/subplot.html"
+               target="_blank">
+               https://matplotlib.org/gallery/subplots_axes_and_figures/subplot.html
+            </a>
+         </p>
+      </li>
+      <li>
+         <p>
+            How are ratings distributed?
+         </p>
+         <p>
+            In <strong>ratings.csv</strong>, the third column contains ratings for movies.
+            Values range from 0 - 5.  Each row represents a rating an individual
+            gave to a movie. 
+            Create a countplot that shows the count of how often a rating is used.
+            Compute the
+            average of all ratings, and use that to color the bars so that the bars
+            for all ratings below the average are colored <strong>red</strong>
+            and the bars for all ratings above
+            the average are colored <strong>blue</strong>.
+         </p>
+      </li>
+      
+      <li>
+         <p>
+            Compare ratings for four different movies.
+         </p>
+         <p>
+            To answer this you will need to use two files, <strong>ratings.csv</strong>
+            and <strong>movies.csv</strong>.
+            In the <strong>movies.csv</strong>, the first column is the movie id.
+            In the <strong>ratings.csv</strong>, the second column is the movie id.
+            A single movie in <strong>movies.csv</strong> can have 0 or more
+            matching rows in <strong>ratings.csv</strong>.  If you are familiar with
+            databases, this is similar to joining two tables.
+         </p>
+         <p>
+            Pick four movies in <strong>movies.csv</strong> and retrieve their movidId.
+            Create countplots for each movie's ratings.  Graph it as one plot with
+            4 subplots, similar to
+            <a href="https://seaborn.pydata.org/examples/anscombes_quartet.html" target="_blank">
+               https://seaborn.pydata.org/examples/anscombes_quartet.html</a>.
+            Be aware that example uses a scatter plot, you are doing a
+            count plot.  Make sure each subplot identifies which movie it represents.
+         </p>
+      </li>
+   </ol>
+   <h2>Tips and help</h2>
+   <p>
+      Remember, we talked about files and listing directories in a previous lecture.
+   </p>
+   <p>
+      When you are running code, you may not
+      see results right away.  You should look to the left of the code cell for the
+      <code>In [ ]:</code> marker.  If you see a number, for example, <code>In [8]:</code>,
+      the code in the cell is not currently
+      running.  But if you see an asterisk, for example, <code>In [*]:</code>,
+      the code in the cell is running on the kernel,
+      and results may not be available yet.  The asterisk should change
+      to a number when the code is done.
+   </p>
+   <p>
+      Remember, you can stop a running cell by choosing the "stop" button in the menu.
+      It is the one that looks like a black square.
+   </p>
+   <p>
+      You can always come see me in my office or send me email.  If you send me email,
+      you should send your code as an attachment.  Don't copy/paste your code into
+      the message because that will make it harder for me to debug your code.  Send your file
+      as a <code>.ipynb</code> file
+   </p>
+   
+   <h2>Submission</h2>
+   <p>
+      When your program is correct, log into D2L and locate the Dropbox for assignment 5.
+      Upload the file
+   </p>
+   <ul>
+      <li>assignment5.ipynb</li>
+   </ul>
+   <p>
+      into the D2L dropbox.  
+   </p>
+   <p>
+      Contact me if you have any problems.
+   </p>
+</body>
+</html>
