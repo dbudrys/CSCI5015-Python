@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>CSCI 5015 Assignment</title>
+   <style>
+      h1 {
+         text-align: center;
+      }
+      p, li, figcaption {
+         font-size: 12pt;
+      }
+      li {
+         margin-bottom: .5em;
+      }
+      pre {
+         margin: 0;
+      }
+      code {
+         font-weight: bold;
+      }
+      .markdown_example {
+         margin-left: 5em;
+         font-family: sans-serif;
+      }
+      .markdown_example h1 {
+         text-align: left;
+      }
+   </style>
+   
+</head>
+
+<body>
+   <h1>
+   CSCI 5015 Assignment 3
+   <span style="color: red;">Updated</span>
+   <br>
+   Due Feb 23, 11:59 PM.
+   <br>
+   50 points
+   </h1>
+    
+   <h2>Objective</h2>
+   <p>
+      Create a Jupyter notebook, become familiar with Markdown, and perform some basic
+      text analysis.
+   </p>
+   
+   <h2>Background</h2>
+   <p>
+      Not all data is numeric.  Not all data is nicely structured.  One example
+      of data that fits  both of these statements is text, particularly unstructured text.
+      There is a whole sub-area of
+      data science devoted to unstructured text. 
+      Unstructured text would included data like emails, documents, and web pages.
+      Another example are tweets from Twitter.   In this assignment, we will
+      do some basic processing of text data.  You've been given
+      a data file that is a collection of customer
+      support tweets in CSV format. The original can be downloaded from 
+      <a href="https://www.kaggle.com/thoughtvector/customer-support-on-twitter"
+         target="_blank">Kaggle</a>.  
+   </p>
+   <p>
+      The file is fairly simple.  It contains these fields:
+   </p>
+   <ul>
+      <li>tweet_id - numeric</li>
+      <li>author_id - string</li>
+      <li>inbound - boolean</li>
+      <li>created_at - string</li>
+      <li>text - string</li>
+      <li>response_tweet_id - string</li>
+      <li>in_response_to_tweet_id - string</li>
+   </ul>
+   <p>
+      We are mostly concerned with the column <code>text</code> as that contains
+      the text of the tweets.  
+   </p>
+   <p>
+      <span style="color: red;font-weight: bold">Update:</span> The file is not an ASCII file.
+      It is actually a UTF-8 file.  The call to <code>open()</code> needs to be changed
+      in order to read the file without an error.  When you open the file
+      for reading,
+      add an <code>encoding</code> argument like this:
+   </p>
+   <code><pre>
+      open('twcs.csv', encoding='utf-8')
+   </pre></code>
+   
+   <h2>Coding instructions</h2>
+   <p>
+      Create a Jupyter notebook file named <b>assignment3.ipynb</b>.  Unzip the file,
+      <strong>twcs.zip</strong> and place the data file
+      <strong>twcs.csv</strong>
+      in the same folder as your notebook.  
+   </p>
+   <p>
+      Make the first cell in your notebook a Markdown cell and create
+      a header that says "Customer Support Analysis" and then on the next line,
+      have a plain paragraph that says "Written by John Nicholson" 
+      (hopefully, it is obvious that
+      you should replace my name with your name).  It should look roughly like this
+      after you render the Markdown:
+   </p>
+   <div class="markdown_example">
+      <h1>Customer Support Analysis</h1>
+      <p>Written by John Nicholson</p>
+   </div>
+   <p>
+      Use your notebook to answer the questions below.
+      Your notebook should have both code cells and Markdown cells.
+      The code cells should read and process the data,
+      and the Markdown cell should explain what the associated code cell does
+      and why you wrote the code
+      the way you did.  You can, and probably should, add extra cells to
+      make your main code easier to read and use.
+   </p>
+   <h3>Requirements</h3>
+   <ul>
+      <li>
+         No single code cell should produce all the output for more than
+         one question.
+         At a minimum, you will need 8 code cells, one for each question.
+      </li>
+      <li>
+         If you make additional code cells, they do not have to display data.
+         For example, you may want to write a helper
+         function in a code cell.  You
+         still need a Markdown cell describing the function and why you wrote the
+         function in the first place.
+      </li>
+      <li>
+         All code cells need a Markdown cell explaining what the code does
+         and why you wrote it the way you did.  Explanations should be
+         complete sentences and paragraphs,
+         use good grammar, and be spell-checked.
+      </li>
+      <li>
+         Before turning in your notebook, ensure that all code cells
+         that produce output have their output displayed.  I should not
+         have to run your notebook in order to see the output.  You should
+         all render all Markdown cells.  That is, I should see the special
+         Markdown characters like the #.  I should see nicely rendered text.
+      </li>
+   </ul>
+   <h3>Questions</h3>
+   <ol>
+      <li>How many tweets are in the data?</li>
+      <li>
+         Some of the tweets contain languages other than English.  Demonstrate this
+         by printing the tweet with the <code>tweet_id</code> 269.
+      </li>
+      <li>
+         How many tweets contain at least 50% non-English characters?  For the purpose
+         of this question, "English" means ASCII characters.  That will include letters,
+         punctuation, numbers, and white space.
+      </li>
+      <li>
+         How many unique twitter names are used in the tweets?  
+         Users can be identified in a tweet with a word that starts with an <code>@</code>
+         followed by a combination of alphanumeric characters and underscores.
+         Be aware, some tweets
+         contain 0 usernames while others can contain 1, 2 or more usernames.
+      </li>
+      <li>
+         What are the top 10 usernames that appear in the file?  
+         That is, count how many times each username is used in a tweet
+         and determine the 10
+         usernames with the highest count.
+      </li>
+      <li>
+         How many unique hashtags are used in the tweets?  
+         Hashtags can be identified in a tweet with a word that starts with an <code>#</code>
+         followed by a combination of alphanumeric characters and underscores.
+      </li>
+      <li>
+         What are the top 10 hashtags that appear in the file?  
+         That is, count how many times each hashtags is used in a tweet
+         and determine the 10
+         hashtags with the highest count.
+      </li>
+      <li>
+         Excluding hashtags and usernames, what words are used most often in tweets?
+         Display the top 20 words.  You don't have to worry about punctuation or plural
+         words.  For our purposes, <code>John</code> and <code>John's</code>
+         and <code>John.</code> will be considered three separate words.
+         Uppercase and lowercase should not make a difference.  For example,
+         <code>computer</code>, <code>Computer</code>, <code>COMPUTER</code>
+         are all the same word.
+      </li>
+   </ol>
+   <h2>Tips and help</h2>
+   <p>
+      You may want to read Python's documentation on the <code>string</code>
+      module,
+      <a href="https://docs.python.org/3.1/library/string.html" target="_blank">
+         https://docs.python.org/3.1/library/string.html</a>.
+   </p>
+   <p>
+      Dictionaries are useful things.  Remember, their keys will be unique.  Dictionaries
+      are very useful for counting occurrences of things.
+   </p>
+   <p>
+      This is a big file, and it will take a while to process it.  You may want to
+      do short tests that only run on tweets with <code>tweet_id</code> less than
+      some value, for example, 100, 300, or 1000.
+   </p>
+   <p>
+      When you are running code, you may not
+      see results right away.  You should look to the left of the code cell for the
+      <code>In [ ]:</code> marker.  If you see a number, for example, <code>In [8]:</code>,
+      the code in the cell is not currently
+      running.  But if you see an asterisk, for example, <code>In [*]:</code>,
+      the code in the cell is running on the kernel,
+      and results may not be available yet.  The asterisk should change
+      to a number when the code is done.
+   </p>
+   <p>
+      Remember, you can stop a running cell by choosing the "stop" button in the menu.
+      It is the one that looks like a black square.
+   </p>
+   <p>
+      You can always come see me in my office or send me email.  If you send me email,
+      you should send your code as an attachment.  Don't copy/paste your code into
+      the message because that will make it harder for me to debug your code.  Send your file
+      as a <code>.ipynb</code> file
+   </p>
+   
+   <h2>Submission</h2>
+   <p>
+      When your program is correct, log into D2L and locate the Dropbox for assignment 3.
+      Upload the file
+   </p>
+   <ul>
+      <li>assignment3.ipynb</li>
+   </ul>
+   <p>
+      into the D2L dropbox.  
+   </p>
+   <p>
+      Contact me if you have any problems.
+   </p>
+</body>
+</html>
